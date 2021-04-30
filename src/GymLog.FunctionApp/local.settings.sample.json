@@ -1,0 +1,26 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "<application_insights_instrumentation_key>",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "<application_insights_connection_string>",
+
+    "AzureWebJobsServiceBus": "<service_bus_connection_string>",
+    "AzureWebJobsServiceBusTopicName": "topic-gymlogs",
+    "AzureWebJobsServiceBusSubscriptionName": "subscription-gymlogs",
+
+    "CosmosDbConnection": "<cosmos_db_connection_string>",
+
+    "GymLog__StorageAccount__Table__TableName": "gymlogs",
+    "GymLog__ServiceBus__TopicName": "topic-gymlogs",
+    "GymLog__ServiceBus__SubscriptionName": "subscription-gymlogs",
+    "GymLog__CosmosDB__DatabaseName": "GymLog",
+    "GymLog__CosmosDB__ContainerName": "gymlogs",
+    "GymLog__CosmosDB__PartitionKeyPath": "/routine",
+
+    "OpenApi__Version": "v2",
+    "OpenApi__DocVersion": "v1.0.0"
+  }
+}
