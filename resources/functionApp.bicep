@@ -24,6 +24,11 @@ param gymLogPartitionKeyPath string = '/routine'
 param openApiVersion string = 'v2'
 param openApiDocVersion string = 'v1.0.0'
 
+param forceErrorRoutine bool = false
+param forceErrorExercise bool = false
+param forceErrorPublish bool = false
+param forceErrorIngest bool = false
+
 var metadata = {
     longName: '{0}-${name}-${env}-${locationCode}'
     shortName: '{0}${name}${env}${locationCode}'
@@ -62,6 +67,12 @@ var functionApp = {
     openapi: {
         version: openApiVersion
         docVersion: openApiDocVersion
+    }
+    errorEnforcement: {
+        routine: forceErrorRoutine
+        exercise: forceErrorExercise
+        publish: forceErrorPublish
+        ingest: forceErrorIngest
     }
 }
 
@@ -162,6 +173,23 @@ resource fncapp 'Microsoft.Web/sites@2020-12-01' = {
                 {
                     name:  'OpenApi__DocVersion'
                     value: functionApp.openapi.docVersion
+                }
+                // Force Error Settings
+                {
+                    name:  'ForceError__Publisher__Routine'
+                    value: '${functionApp.errorEnforcement.routine}'
+                }
+                {
+                    name:  'ForceError__Publisher__Exercise'
+                    value: '${functionApp.errorEnforcement.exercise}'
+                }
+                {
+                    name:  'ForceError__Publisher__Publish'
+                    value: '${functionApp.errorEnforcement.publish}'
+                }
+                {
+                    name:  'ForceError__Subscriber__Ingest'
+                    value: '${functionApp.errorEnforcement.ingest}'
                 }
             ]
         }

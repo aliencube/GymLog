@@ -45,6 +45,10 @@ param functionAppTimezone string = 'Korea Standard Time'
 param gymLogTableName string = 'gymlogs'
 param openApiVersion string = 'v3'
 param openApiDocVersion string = 'v1.0.0'
+param forceErrorRoutine bool = false
+param forceErrorExercise bool = false
+param forceErrorPublish bool = false
+param forceErrorIngest bool = false
 
 module st './storageAccount.bicep' = if (storageAccountToProvision) {
     name: 'StorageAccount'
@@ -157,5 +161,9 @@ module fncapp './functionApp.bicep' = if (functionAppToProvision) {
         gymLogPartitionKeyPath: cosdba.outputs.partitionKeyPath
         openApiVersion: openApiVersion
         openApiDocVersion: openApiDocVersion
+        forceErrorRoutine: forceErrorRoutine
+        forceErrorExercise: forceErrorExercise
+        forceErrorPublish: forceErrorPublish
+        forceErrorIngest: forceErrorIngest
     }
 }
