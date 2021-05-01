@@ -23,17 +23,32 @@ using Microsoft.OpenApi.Models;
 
 namespace GymLog.FunctionApp.Triggers
 {
+    /// <summary>
+    /// This represents the HTTP trigger entity for routine.
+    /// </summary>
     public class RoutineHttpTrigger
     {
         private readonly AppSettings _settings;
         private readonly TableServiceClient _client;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutineHttpTrigger"/> class.
+        /// </summary>
+        /// <param name="settings"><see cref="AppSettings"/> instance.</param>
+        /// <param name="client"><see cref="TableServiceClient"/> instance.</param>
         public RoutineHttpTrigger(AppSettings settings, TableServiceClient client)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this._client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
+        /// <summary>
+        /// Creates routine record.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequest"/> instance.</param>
+        /// <param name="context"><see cref="ExecutionContext"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        /// <returns>Returns the <see cref="RoutineResponseMessage"/> object.</returns>
         [FunctionName(nameof(RoutineHttpTrigger.CreateRoutineAsync))]
         [OpenApiOperation(operationId: "CreateRoutine", tags: new[] { "publisher", "routine" }, Summary = "Create a new routine", Description = "This creates a new routine", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header, Description = "API key to execute this endpoint")]
@@ -45,15 +60,16 @@ namespace GymLog.FunctionApp.Triggers
             ExecutionContext context,
             ILogger log)
         {
-            var request = await req.ToRoutineRequestMessageAsync().ConfigureAwait(false);
+            var request = await req.ToRequestMessageAsync<RoutineRequestMessage>().ConfigureAwait(false);
             var eventId = context.InvocationId;
             var spanId = request.SpanId;
             var correlationId = request.CorrelationId;
+            var @interface = request.Interface;
 
             log.LogData(LogLevel.Information, request,
                         EventType.RoutineReceived, EventStatusType.Succeeded, eventId,
                         SpanType.Publisher, SpanStatusType.PublisherInitiated, spanId,
-                        request.Interface, correlationId);
+                        @interface, correlationId);
 
             var routineId = Guid.NewGuid();
             var entity = new RoutineEntity()
@@ -75,12 +91,12 @@ namespace GymLog.FunctionApp.Triggers
                 var table = this._client.GetTableClient(this._settings.GymLog.StorageAccount.Table.TableName);
                 var response = await table.UpsertEntityAsync(entity).ConfigureAwait(false);
 
-                res = response.ToRoutineResponseMessage(correlationId, spanId, eventId, entity.RoutineId, entity.Routine);
+                res = response.ToRoutineResponseMessage(correlationId, @interface, spanId, eventId, entity.RoutineId, entity.Routine);
 
                 log.LogData(response.Status.ToLogLevel(), res.Value,
                             response.Status.ToRoutineCreatedEventType(), response.Status.ToEventStatusType(), eventId,
                             SpanType.Publisher, SpanStatusType.PublisherInProgress, spanId,
-                            request.Interface, correlationId,
+                            @interface, correlationId,
                             clientRequestId: response.ClientRequestId,
                             message: response.Status.ToResponseMessage(res));
             }
@@ -89,6 +105,7 @@ namespace GymLog.FunctionApp.Triggers
                 res = new InternalServerErrorObjectResult()
                 {
                     CorrelationId = correlationId,
+                    Interface = @interface,
                     SpanId = spanId,
                     EventId = eventId,
                     Message = ex.Message,
@@ -97,7 +114,7 @@ namespace GymLog.FunctionApp.Triggers
                 log.LogData(LogLevel.Error, res.Value,
                             EventType.RoutineNotCreated, EventStatusType.Failed, eventId,
                             SpanType.Publisher, SpanStatusType.PublisherInProgress, spanId,
-                            request.Interface, correlationId,
+                            @interface, correlationId,
                             ex: ex,
                             message: ex.Message);
             }

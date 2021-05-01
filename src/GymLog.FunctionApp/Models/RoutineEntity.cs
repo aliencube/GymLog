@@ -2,6 +2,9 @@ using System;
 
 namespace GymLog.FunctionApp.Models
 {
+    /// <summary>
+    /// This represents the entity for routine.
+    /// </summary>
     public class RoutineEntity : ItemEntity
     {
         /// <summary>

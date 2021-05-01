@@ -6,10 +6,14 @@ using Microsoft.OpenApi.Models;
 
 namespace GymLog.FunctionApp.Configurations
 {
+    /// <summary>
+    /// This represents the options entity for OpenAPI metadata configuration.
+    /// </summary>
     public class OpenApiConfigurationOptions : DefaultOpenApiConfigurationOptions
     {
         private const string OpenApiVersionKey = "OpenApi__Version";
 
+        /// <inheritdoc/>
         public override OpenApiInfo Info { get; set; } = new OpenApiInfo()
         {
             Version = Environment.GetEnvironmentVariable("OpenApi__DocVersion") ?? "1.0.0",
@@ -28,6 +32,7 @@ namespace GymLog.FunctionApp.Configurations
             }
         };
 
+        /// <inheritdoc/>
         public override OpenApiVersionType OpenApiVersion { get; set; } = Enum.TryParse<OpenApiVersionType>(
                                                                               Environment.GetEnvironmentVariable(OpenApiVersionKey), ignoreCase: true, out var result)
                                                                             ? result

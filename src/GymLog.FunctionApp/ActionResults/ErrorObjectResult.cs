@@ -1,6 +1,7 @@
 using System;
 
 using GymLog.FunctionApp.Models;
+using GymLog.FunctionApp.Traces;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,11 @@ namespace GymLog.FunctionApp.ActionResults
         /// Gets or sets the correlation ID.
         /// </summary>
         public virtual Guid CorrelationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interface.
+        /// </summary>
+        public virtual InterfaceType Interface { get; set; }
 
         /// <summary>
         /// Gets or sets the span ID.
@@ -40,12 +46,13 @@ namespace GymLog.FunctionApp.ActionResults
         /// Converts the <see cref="ErrorObjectResult"/> object to the <see cref="ObjectResult"/> object implicitly.
         /// </summary>
         /// <param name="instance"><see cref="ErrorObjectResult"/> object.</param>
-        /// <return>Returns the <see cref="ObjectResult"/> object.</return>
+        /// <returns>Returns the <see cref="ObjectResult"/> object.</returns>
         public static implicit operator ObjectResult(ErrorObjectResult instance)
         {
             var message = new ErrorResponseMessage()
             {
                     CorrelationId = instance.CorrelationId,
+                    Interface = instance.Interface,
                     SpanId = instance.SpanId,
                     EventId = instance.EventId,
                     Message = instance.Message,

@@ -10,8 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: FunctionsStartup(typeof(GymLog.FunctionApp.Startup))]
 namespace GymLog.FunctionApp
 {
+    /// <summary>
+    /// This represents the startup entity for the runtime initialisation.
+    /// </summary>
     public class Startup : FunctionsStartup
     {
+        /// <inheritdoc/>
         public override void Configure(IFunctionsHostBuilder builder)
         {
             this.ConfigureAppSettings(builder.Services);

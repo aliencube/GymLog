@@ -2,22 +2,18 @@ using System.Net;
 
 using GymLog.FunctionApp.Traces;
 
-using Microsoft.Extensions.Logging;
-
 namespace GymLog.FunctionApp.Extensions
 {
+    /// <summary>
+    /// This represents the extension entity for Cosmos DB records.
+    /// </summary>
     public static class ItemResponseExtensions
     {
-        public static LogLevel ToLogLevel(this HttpStatusCode statusCode)
-        {
-            return AzureResponseExtensions.ToLogLevel((int)statusCode);
-        }
-
-        public static EventStatusType ToEventStatusType(this HttpStatusCode statusCode)
-        {
-            return AzureResponseExtensions.ToEventStatusType((int)statusCode);
-        }
-
+        /// <summary>
+        /// Gets the <see cref="EventType"/> value from the HTTP status code value.
+        /// </summary>
+        /// <param name="statusCode">HTTP status code.</param>
+        /// <returns>Returns the <see cref="EventType"/> value.</returns>
         public static EventType ToMessageEventType(this HttpStatusCode statusCode)
         {
             if (statusCode < HttpStatusCode.BadRequest)

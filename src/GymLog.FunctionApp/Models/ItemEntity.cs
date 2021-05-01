@@ -5,6 +5,9 @@ using Azure.Data.Tables;
 
 namespace GymLog.FunctionApp.Models
 {
+    /// <summary>
+    /// This represents the item entity for Table Storage. This MUST be inherited.
+    /// </summary>
     public abstract class ItemEntity : ITableEntity
     {
         /// <summary>

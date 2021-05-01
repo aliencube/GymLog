@@ -11,8 +11,12 @@ using Newtonsoft.Json.Serialization;
 
 namespace GymLog.FunctionApp.Examples
 {
+    /// <summary>
+    /// This represents the example entity for the <see cref="ExerciseRequestMessage"/> object.
+    /// </summary>
     public class ExerciseRequestMessageExample : OpenApiExample<ExerciseRequestMessage>
     {
+        /// <inheritdoc/>
         public override IOpenApiExample<ExerciseRequestMessage> Build(NamingStrategy namingStrategy = null)
         {
             this.Examples.Add(
@@ -34,6 +38,7 @@ namespace GymLog.FunctionApp.Examples
                             new ExerciseSet() { Sequence = 4, Repetitions = 15, Weight = 10.0M, Unit = WeightUnitType.Lbs },
                             new ExerciseSet() { Sequence = 5, Repetitions = 15, Weight = 10.0M, Unit = WeightUnitType.Lbs },
                         },
+                        AdditionalNotes = "All sets with the same weight",
                     },
                     namingStrategy
                 )

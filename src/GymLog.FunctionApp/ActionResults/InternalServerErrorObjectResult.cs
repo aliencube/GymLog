@@ -23,12 +23,13 @@ namespace GymLog.FunctionApp.ActionResults
         /// Converts the <see cref="InternalServerErrorObjectResult"/> object to the <see cref="ObjectResult"/> object implicitly.
         /// </summary>
         /// <param name="instance"><see cref="InternalServerErrorObjectResult"/> object.</param>
-        /// <return>Returns the <see cref="ObjectResult"/> object.</return>
+        /// <returns>Returns the <see cref="ObjectResult"/> object.</returns>
         public static implicit operator ObjectResult(InternalServerErrorObjectResult instance)
         {
             var message = new ErrorResponseMessage()
             {
                     CorrelationId = instance.CorrelationId,
+                    Interface = instance.Interface,
                     SpanId = instance.SpanId,
                     EventId = instance.EventId,
                     Message = instance.Message,

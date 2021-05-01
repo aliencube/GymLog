@@ -10,8 +10,12 @@ using Newtonsoft.Json.Serialization;
 
 namespace GymLog.FunctionApp.Examples
 {
+    /// <summary>
+    /// This represents the example entity for the <see cref="RoutineRequestMessage"/> object.
+    /// </summary>
     public class RoutineRequestMessageExample : OpenApiExample<RoutineRequestMessage>
     {
+        /// <inheritdoc/>
         public override IOpenApiExample<RoutineRequestMessage> Build(NamingStrategy namingStrategy = null)
         {
             this.Examples.Add(

@@ -19,6 +19,9 @@ using Newtonsoft.Json;
 
 namespace GymLog.FunctionApp.Triggers
 {
+    /// <summary>
+    /// This represents the Service Bus trigger entity to process records.
+    /// </summary>
     public class RecordServiceBusTrigger
     {
         private const string GymLogTopicKey = "%AzureWebJobsServiceBusTopicName%";
@@ -27,12 +30,23 @@ namespace GymLog.FunctionApp.Triggers
         private readonly AppSettings _settings;
         private readonly CosmosClient _client;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecordServiceBusTrigger"/> class.
+        /// </summary>
+        /// <param name="settings"><see cref="AppSettings"/> instance.</param>
+        /// <param name="client"><see cref="CosmosClient"/> instance.</param>
         public RecordServiceBusTrigger(AppSettings settings, CosmosClient client)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this._client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
+        /// <summary>
+        /// Ingests message from Service Bus and stores it to Cosmos DB.
+        /// </summary>
+        /// <param name="msg"><see cref="ServiceBusReceivedMessage"/> instance.</param>
+        /// <param name="context"><see cref="ExecutionContext"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
         [FunctionName(nameof(RecordServiceBusTrigger.IngestAsync))]
         public async Task IngestAsync(
             [ServiceBusTrigger(GymLogTopicKey, GymLogSubscriptionKey)] ServiceBusReceivedMessage msg,

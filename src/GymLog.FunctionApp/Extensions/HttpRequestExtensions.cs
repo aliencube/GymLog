@@ -9,9 +9,18 @@ using Newtonsoft.Json;
 
 namespace GymLog.FunctionApp.Extensions
 {
+    /// <summary>
+    /// This represents the extension entity for <see cref="HttpRequest"/> class.
+    /// </summary>
     public static class HttpRequestExtensions
     {
-        public static async Task<RoutineRequestMessage> ToRoutineRequestMessageAsync(this HttpRequest req)
+        /// <summary>
+        /// Builds the <see cref="RoutineRequestMessage"/> object from HTTP request.
+        /// </summary>
+        /// <typeparam name="T">Type to deserialise.</typeparam>
+        /// <param name="req"><see cref="HttpRequest"/> instance.</param>
+        /// <returns>Returns the <see cref="RoutineRequestMessage"/> object.</returns>
+        public static async Task<T> ToRequestMessageAsync<T>(this HttpRequest req) where T : RequestMessage
         {
             var serialised = default(string);
             using (var reader = new StreamReader(req.Body))
@@ -19,33 +28,7 @@ namespace GymLog.FunctionApp.Extensions
                 serialised = await reader.ReadToEndAsync().ConfigureAwait(false);
             }
 
-            var payload = JsonConvert.DeserializeObject<RoutineRequestMessage>(serialised);
-
-            return payload;
-        }
-
-        public static async Task<ExerciseRequestMessage> ToExerciseRequestMessageAsync(this HttpRequest req)
-        {
-            var serialised = default(string);
-            using (var reader = new StreamReader(req.Body))
-            {
-                serialised = await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            var payload = JsonConvert.DeserializeObject<ExerciseRequestMessage>(serialised);
-
-            return payload;
-        }
-
-        public static async Task<RecordRequestMessage> ToRecordRequestMessageAsync(this HttpRequest req)
-        {
-            var serialised = default(string);
-            using (var reader = new StreamReader(req.Body))
-            {
-                serialised = await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            var payload = JsonConvert.DeserializeObject<RecordRequestMessage>(serialised);
+            var payload = JsonConvert.DeserializeObject<T>(serialised);
 
             return payload;
         }
