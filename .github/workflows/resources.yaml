@@ -5,7 +5,7 @@ on:
     branches:
     - main
     paths:
-    - resources
+    - 'resources/**'
 
 jobs:
   arm_template_build_test_deploy_dev:

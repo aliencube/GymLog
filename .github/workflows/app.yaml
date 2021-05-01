@@ -5,8 +5,8 @@ on:
     branches:
     - main
     paths:
-    - src
-    - test
+    - 'src/**'
+    - 'test/**'
 
 env:
   FUNCTIONAPP_PATH: 'src/GymLog.FunctionApp'
