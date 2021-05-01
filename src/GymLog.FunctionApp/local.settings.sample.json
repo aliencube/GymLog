@@ -20,7 +20,7 @@
     "GymLog__CosmosDB__ContainerName": "gymlogs",
     "GymLog__CosmosDB__PartitionKeyPath": "/routine",
 
-    "OpenApi__Version": "v3",
+    "OpenApi__Version": "v2",
     "OpenApi__DocVersion": "v1.0.0"
   }
 }
