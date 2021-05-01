@@ -28,5 +28,10 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the list of exercise sets.
         /// </summary>
         public virtual string Sets { get; set; }
+
+        /// <summary>
+        /// Gets or sets the additional notes.
+        /// </summary>
+        public virtual string AdditionalNotes { get; set; }
     }
 }

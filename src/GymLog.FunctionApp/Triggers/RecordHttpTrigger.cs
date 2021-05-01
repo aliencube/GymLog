@@ -41,6 +41,7 @@ namespace GymLog.FunctionApp.Triggers
         [FunctionName(nameof(RecordHttpTrigger.PublishRoutineAsync))]
         [OpenApiOperation(operationId: "PublishRoutine", tags: new[] { "publisher", "publish" }, Summary = "Publish the routine", Description = "This publishes the routine", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header, Description = "API key to execute this endpoint")]
+        [OpenApiParameter(name: "routineId", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "Routine ID", Description = "The routine ID to publish", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiRequestBody(contentType: ContentTypes.ApplicationJson, bodyType: typeof(RecordRequestMessage), Required = true, Example = typeof(RecordRequestMessageExample), Description = "The request message payload for a record/publish")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: ContentTypes.ApplicationJson, bodyType: typeof(RecordResponseMessage), Example = typeof(RecordResponseMessageExample), Summary = "200 response", Description = "This returns the response of 'OK'")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: ContentTypes.ApplicationJson, bodyType: typeof(ErrorResponseMessage), Example = typeof(ErrorResponseMessageExample), Summary = "500 response", Description = "This returns the response of 'Internal Server Error'")]

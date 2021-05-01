@@ -18,5 +18,8 @@ namespace GymLog.FunctionApp.Models
 
         [JsonProperty("sets")]
         public virtual List<ExerciseSet> Sets { get; set; } = new List<ExerciseSet>();
+
+        [JsonProperty("additionalNotes")]
+        public virtual string AdditionalNotes { get; set; }
     }
 }

@@ -37,6 +37,7 @@ namespace GymLog.FunctionApp.Triggers
         [FunctionName(nameof(ExerciseHttpTrigger.CreateExercisesAsync))]
         [OpenApiOperation(operationId: "CreateExercise", tags: new[] { "publisher", "exercise" }, Summary = "Create a new exercise", Description = "This creates a new exercise", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header, Description = "API key to execute this endpoint")]
+        [OpenApiParameter(name: "routineId", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "Routine ID", Description = "The routine to add the exercise", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiRequestBody(contentType: ContentTypes.ApplicationJson, bodyType: typeof(ExerciseRequestMessage), Required = true, Example = typeof(ExerciseRequestMessageExample), Description = "The request message payload for an exercise")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: ContentTypes.ApplicationJson, bodyType: typeof(ExerciseResponseMessage), Example = typeof(ExerciseResponseMessageExample), Summary = "200 response", Description = "This returns the response of 'OK'")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: ContentTypes.ApplicationJson, bodyType: typeof(ErrorResponseMessage), Example = typeof(ErrorResponseMessageExample), Summary = "500 response", Description = "This returns the response of 'Internal Server Error'")]
@@ -82,6 +83,7 @@ namespace GymLog.FunctionApp.Triggers
                 ExerciseId = exerciseId,
                 Exercise = request.Exercise,
                 Sets = request.Sets.ToJson(),
+                AdditionalNotes = request.AdditionalNotes,
             };
 
             var res = default(ObjectResult);

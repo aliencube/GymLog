@@ -35,6 +35,7 @@ namespace GymLog.FunctionApp.Extensions
                                                 ExerciseId = p.ExerciseId,
                                                 Name = p.Exercise,
                                                 Sets = p.Sets.FromJson<List<ExerciseSet>>(),
+                                                AdditionalNotes = p.AdditionalNotes,
                                             }
                                      )
                                     .ToList();
