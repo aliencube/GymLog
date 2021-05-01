@@ -110,7 +110,7 @@ namespace GymLog.FunctionApp.Triggers
                 var table = this._client.GetTableClient(this._settings.GymLog.StorageAccount.Table.TableName);
                 var response = await table.UpsertEntityAsync(entity).ConfigureAwait(false);
 
-                res = response.ToExerciseResponseMessage(correlationId, @interface, spanId, eventId, entity.RoutineId, entity.ExerciseId, entity.Exercise, entity.Sets, entity.AdditionalNotes);
+                res = response.ToExerciseResponseMessage(correlationId, @interface, spanId, eventId, entity.RoutineId, entity.Routine, entity.ExerciseId, entity.Exercise, entity.Sets, entity.AdditionalNotes);
 
                 log.LogData(response.Status.ToLogLevel(), res.Value,
                             response.Status.ToExerciseEventType(), response.Status.ToEventStatusType(), eventId,
