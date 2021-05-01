@@ -37,6 +37,7 @@ jobs:
           $azureWorkbookToProvision = $true
         }
 
+        echo "azureWorkbookToProvision: $azureWorkbookToProvision"
         echo '::set-output name=azureWorkbookToProvision::$azureWorkbookToProvision'
 
     - name: Deploy ARM templates
@@ -46,4 +47,4 @@ jobs:
         resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
         deploymentName: 'gymlog'
         template: 'resources/azuredeploy.bicep'
-        parameters: name=${{ secrets.RESOURCE_NAME }} env=${{ secrets.ENVIRONMENT }} locationiCode=${{ secrets.LOCATION_CODE }} azureWorkbookToProvision=${{ steps.azwkbk.outputs.azureWorkbookToProvision }}
+        parameters: name=${{ secrets.RESOURCE_NAME }} env=${{ secrets.ENVIRONMENT }} locationCode=${{ secrets.LOCATION_CODE }} azureWorkbookToProvision=${{ steps.azwkbk.outputs.azureWorkbookToProvision }}
