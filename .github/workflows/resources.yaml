@@ -28,8 +28,8 @@ jobs:
 
     - name: Check Azure Workbook
       id: azwkbk
-      run: powershell
-      shell: |
+      shell: pwsh
+      run: |
         $azureWorkbookToProvision = $false
 
         $azwkbk = az resource list -g rg-gymlog-dev-krc --resource-type Microsoft.Insights/workbooks --query '[0].name' -o tsv
