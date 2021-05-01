@@ -21,6 +21,11 @@
     "GymLog__CosmosDB__PartitionKeyPath": "/routine",
 
     "OpenApi__Version": "v2",
-    "OpenApi__DocVersion": "v1.0.0"
+    "OpenApi__DocVersion": "v1.0.0",
+
+    "ForceError__Publisher__Routine": "false",
+    "ForceError__Publisher__Exercise": "false",
+    "ForceError__Publisher__Publish": "false",
+    "ForceError__Subscriber__Ingest": "false"
   }
 }

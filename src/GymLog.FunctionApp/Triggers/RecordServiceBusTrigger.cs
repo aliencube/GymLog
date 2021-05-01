@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 
 using GymLog.FunctionApp.Configurations;
+using GymLog.FunctionApp.Exceptions;
 using GymLog.FunctionApp.Extensions;
 using GymLog.FunctionApp.Models;
 using GymLog.FunctionApp.Traces;
@@ -67,6 +68,11 @@ namespace GymLog.FunctionApp.Triggers
 
             try
             {
+                if (this._settings.ForceError.Subscriber.Ingest)
+                {
+                    throw new ErrorEnforcementException("Error Enforced!");
+                }
+
                 var databaseName = this._settings.GymLog.CosmosDB.DatabaseName;
                 var containerName = this._settings.GymLog.CosmosDB.ContainerName;
                 var partitionKeyPath = this._settings.GymLog.CosmosDB.PartitionKeyPath;

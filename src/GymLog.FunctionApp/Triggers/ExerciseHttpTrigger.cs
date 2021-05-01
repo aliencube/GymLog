@@ -7,6 +7,7 @@ using Azure.Data.Tables;
 using GymLog.FunctionApp.ActionResults;
 using GymLog.FunctionApp.Configurations;
 using GymLog.FunctionApp.Examples;
+using GymLog.FunctionApp.Exceptions;
 using GymLog.FunctionApp.Extensions;
 using GymLog.FunctionApp.Models;
 using GymLog.FunctionApp.Traces;
@@ -106,6 +107,11 @@ namespace GymLog.FunctionApp.Triggers
             var res = default(ObjectResult);
             try
             {
+                if (this._settings.ForceError.Publisher.Exercise)
+                {
+                    throw new ErrorEnforcementException("Error Enforced!");
+                }
+
                 await this._client.CreateTableIfNotExistsAsync(this._settings.GymLog.StorageAccount.Table.TableName).ConfigureAwait(false);
                 var table = this._client.GetTableClient(this._settings.GymLog.StorageAccount.Table.TableName);
                 var response = await table.UpsertEntityAsync(entity).ConfigureAwait(false);
