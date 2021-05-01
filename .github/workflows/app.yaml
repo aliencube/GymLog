@@ -1,0 +1,81 @@
+name: App Build, Test & Deploy
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - src
+    - test
+
+env:
+  FUNCTIONAPP_PATH: 'src/GymLog.FunctionApp'
+
+jobs:
+  functionapp_build_test_deploy_dev:
+    name: 'FunctionApp Build, Test & Deploy'
+
+    runs-on: ubuntu-latest
+
+    env:
+      RESOURCE_GROUP_NAME: 'rg-${{ secrets.RESOURCE_NAME }}-${{ secrets.ENVIRONMENT }}-${{ secrets.LOCATION_CODE }}'
+      FUNCTIONAPP_NAME: 'fncapp-${{ secrets.RESOURCE_NAME }}-${{ secrets.ENVIRONMENT }}-${{ secrets.LOCATION_CODE }}'
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: Azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Restore NuGet packages
+      shell: bash
+      run: |
+        dotnet restore .
+
+    - name: Build solution
+      shell: bash
+      run: |
+        dotnet build . -c Release
+
+    - name: Test solution
+      shell: bash
+      run: |
+        dotnet test . -c Release
+
+    - name: Create FunctionApp artifact
+      shell: bash
+      run: |
+        dotnet publish ${{ env.FUNCTIONAPP_PATH }} -c Release -o published
+
+    - name: Get FunctionApp publish profile
+      id: publishprofile
+      uses: aliencube/publish-profile-actions@v1
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        appName: ${{ env.FUNCTIONAPP_NAME }}
+
+    - name: Deploy FunctionApp
+      uses: Azure/functions-action@v1
+      with:
+        app-name: ${{ env.FUNCTIONAPP_NAME }}
+        package: published
+        publish-profile: ${{ steps.publishprofile.outputs.profile }}
+
+    - name: Reset FunctionApp publish profile
+      uses: aliencube/publish-profile-actions@v1
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        appName: ${{ env.FUNCTIONAPP_NAME }}
+        reset: true

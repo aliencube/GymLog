@@ -1,0 +1,48 @@
+name: Resource Build, Test & Deploy
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - resources
+
+jobs:
+  arm_template_build_test_deploy_dev:
+    name: 'ARM Templates Build, Test & Deploy'
+
+    runs-on: ubuntu-latest
+
+    env:
+      RESOURCE_GROUP_NAME: 'rg-${{ secrets.RESOURCE_NAME }}-${{ secrets.ENVIRONMENT }}-${{ secrets.LOCATION_CODE }}'
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: Azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Check Azure Workbook
+      id: azwkbk
+      run: pwsh
+      shell: |
+        $azureWorkbookToProvision = $false
+
+        $azwkbk = az resource list -g rg-gymlog-dev-krc --resource-type Microsoft.Insights/workbooks --query '[0].name' -o tsv
+        if (($azwkbk -eq $null) -or ($azwkbk -eq "")) {
+          $azureWorkbookToProvision = $true
+        }
+
+        echo '::set-output name=azureWorkbookToProvision::$azureWorkbookToProvision'
+
+    - name: Deploy ARM templates
+      uses: Azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.SUBSCRIPTION_ID_ }}
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        deploymentName: 'gymlog'
+        template: 'resources/azuredeploy.bicep'
+        parameters: name=${{ secrets.RESOURCE_NAME }} env=${{ secrets.ENVIRONMENT }} locationiCode=${{ secrets.LOCATION_CODE }} azureWorkbookToProvision=${{ steps.azwkbk.outputs.azureWorkbookToProvision }}
