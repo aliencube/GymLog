@@ -24,11 +24,11 @@ jobs:
       uses: Azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
+        # enable-AzPSSession: true
 
     - name: Check Azure Workbook
       id: azwkbk
-      run: pwsh
+      run: powershell
       shell: |
         $azureWorkbookToProvision = $false
 

@@ -43,7 +43,7 @@ param isLinux bool = false
 param functionAppToProvision bool = true
 param functionAppTimezone string = 'Korea Standard Time'
 param gymLogTableName string = 'gymlogs'
-param openApiVersion string = 'v2'
+param openApiVersion string = 'v3'
 param openApiDocVersion string = 'v1.0.0'
 
 module st './storageAccount.bicep' = if (storageAccountToProvision) {
