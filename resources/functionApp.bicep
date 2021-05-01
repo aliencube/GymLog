@@ -21,6 +21,9 @@ param gymLogDatabaseName string = 'GymLog'
 param gymLogContainerName string = 'gymlogs'
 param gymLogPartitionKeyPath string = '/routine'
 
+param openApiVersion string = 'v2'
+param openApiDocVersion string = 'v1.0.0'
+
 var metadata = {
     longName: '{0}-${name}-${env}-${locationCode}'
     shortName: '{0}${name}${env}${locationCode}'
@@ -55,6 +58,10 @@ var functionApp = {
         databaseName: gymLogDatabaseName
         containerName: gymLogContainerName
         partitionKeyPath: gymLogPartitionKeyPath
+    }
+    openapi: {
+        version: openApiVersion
+        docVersion: openApiDocVersion
     }
 }
 
@@ -146,6 +153,15 @@ resource fncapp 'Microsoft.Web/sites@2020-12-01' = {
                 {
                     name:  'GymLog__CosmosDB__PartitionKeyPath'
                     value: functionApp.gymLog.partitionKeyPath
+                }
+                // OpenAPI Settings
+                {
+                    name:  'OpenApi__Version'
+                    value: functionApp.openapi.version
+                }
+                {
+                    name:  'OpenApi__DocVersion'
+                    value: functionApp.openapi.docVersion
                 }
             ]
         }

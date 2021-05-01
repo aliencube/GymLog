@@ -43,6 +43,8 @@ param isLinux bool = false
 param functionAppToProvision bool = true
 param functionAppTimezone string = 'Korea Standard Time'
 param gymLogTableName string = 'gymlogs'
+param openApiVersion string = 'v3'
+param openApiDocVersion string = 'v1.0.0'
 
 module st './storageAccount.bicep' = if (storageAccountToProvision) {
     name: 'StorageAccount'
@@ -153,5 +155,7 @@ module fncapp './functionApp.bicep' = if (functionAppToProvision) {
         gymLogDatabaseName: cosdba.outputs.database
         gymLogContainerName: cosdba.outputs.container
         gymLogPartitionKeyPath: cosdba.outputs.partitionKeyPath
+        openApiVersion: openApiVersion
+        openApiDocVersion: openApiDocVersion
     }
 }
