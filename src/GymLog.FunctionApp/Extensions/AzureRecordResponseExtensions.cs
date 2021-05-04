@@ -21,12 +21,12 @@ namespace GymLog.FunctionApp.Extensions
         /// Gets the <see cref="ObjectResult"/> object from the list of <see cref="ExerciseEntity"/> objects.
         /// </summary>
         /// <param name="entities">List of <see cref="ExerciseEntity"/> objects.</param>
-        /// <param name="request"><see cref="RecordRequestMessage"/> object.</param>
+        /// <param name="request"><see cref="PublishRequestMessage"/> object.</param>
         /// <param name="eventId">Event ID.</param>
         /// <param name="httpStatusCode"><see cref="HttpStatusCode"/> value.</param>
         /// <returns>Returns the <see cref="ObjectResult"/> object.</returns>
-        public static ObjectResult ToRecordResponseMessage(this List<ExerciseEntity> entities,
-                                                                RecordRequestMessage request,
+        public static ObjectResult ToPublishResponseMessage(this List<ExerciseEntity> entities,
+                                                                PublishRequestMessage request,
                                                                 Guid eventId,
                                                                 HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         {
@@ -56,7 +56,7 @@ namespace GymLog.FunctionApp.Extensions
                                      )
                                     .ToList();
 
-            var msg = new RecordResponseMessage()
+            var msg = new PublishResponseMessage()
             {
                 Upn = request.Upn,
                 CorrelationId = request.CorrelationId,

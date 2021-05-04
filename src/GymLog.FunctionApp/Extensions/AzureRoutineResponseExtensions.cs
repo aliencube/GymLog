@@ -71,7 +71,7 @@ namespace GymLog.FunctionApp.Extensions
         /// <param name="httpStatusCode"><see cref="HttpStatusCode"/> value.</param>
         /// <returns>Returns the <see cref="ObjectResult"/> object.</returns>
         public static ObjectResult ToRoutineResponseMessage(this Response response,
-                                                                 RecordRequestMessage request,
+                                                                 PublishRequestMessage request,
                                                                  Guid eventId,
                                                                  Guid routineId,
                                                                  HttpStatusCode httpStatusCode = HttpStatusCode.OK)

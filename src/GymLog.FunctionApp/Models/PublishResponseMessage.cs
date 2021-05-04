@@ -8,7 +8,7 @@ namespace GymLog.FunctionApp.Models
     /// <summary>
     /// This represents the response message entity for record/publish.
     /// </summary>
-    public class RecordResponseMessage : ResponseMessage
+    public class PublishResponseMessage : ResponseMessage
     {
         /// <summary>
         /// Gets or sets the routine ID.
@@ -29,11 +29,11 @@ namespace GymLog.FunctionApp.Models
         public virtual List<Exercise> Exercises { get; set;}
 
         /// <summary>
-        /// Converts the <see cref="RecordResponseMessage"/> object to the <see cref="RoutineQueueMessage"/> object implicitly.
+        /// Converts the <see cref="PublishResponseMessage"/> object to the <see cref="RoutineQueueMessage"/> object implicitly.
         /// </summary>
         /// <param name="instance"><see cref="RecordResponseMessage"/> object.</param>
         /// <returns>Returns the <see cref="RoutineQueueMessage"/> object.</returns>
-        public static implicit operator RoutineQueueMessage(RecordResponseMessage instance)
+        public static implicit operator RoutineQueueMessage(PublishResponseMessage instance)
         {
             var message = new RoutineQueueMessage()
             {

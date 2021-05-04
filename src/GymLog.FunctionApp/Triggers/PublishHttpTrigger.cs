@@ -30,7 +30,7 @@ namespace GymLog.FunctionApp.Triggers
     /// <summary>
     /// This represents the HTTP trigger entity for record/publish.
     /// </summary>
-    public class RecordHttpTrigger
+    public class PublishHttpTrigger
     {
         private const string GymLogTopicKey = "%AzureWebJobsServiceBusTopicName%";
 
@@ -38,11 +38,11 @@ namespace GymLog.FunctionApp.Triggers
         private readonly TableServiceClient _client;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RecordHttpTrigger"/> class.
+        /// Initializes a new instance of the <see cref="PublishHttpTrigger"/> class.
         /// </summary>
         /// <param name="settings"><see cref="AppSettings"/> instance.</param>
         /// <param name="client"><see cref="TableServiceClient"/> instance.</param>
-        public RecordHttpTrigger(AppSettings settings, TableServiceClient client)
+        public PublishHttpTrigger(AppSettings settings, TableServiceClient client)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this._client = client ?? throw new ArgumentNullException(nameof(client));
@@ -57,12 +57,12 @@ namespace GymLog.FunctionApp.Triggers
         /// <param name="collector"><see cref="IAsyncCollector{ServiceBusMessage}"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Returns the <see cref="RecordResponseMessage"/> object.</returns>
-        [FunctionName(nameof(RecordHttpTrigger.PublishRoutineAsync))]
+        [FunctionName(nameof(PublishHttpTrigger.PublishRoutineAsync))]
         [OpenApiOperation(operationId: "PublishRoutine", tags: new[] { "publisher", "publish" }, Summary = "Publish the routine", Description = "This publishes the routine", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "x-functions-key", In = OpenApiSecurityLocationType.Header, Description = "API key to execute this endpoint")]
         [OpenApiParameter(name: "routineId", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "Routine ID", Description = "The routine ID to publish", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiRequestBody(contentType: ContentTypes.ApplicationJson, bodyType: typeof(RecordRequestMessage), Required = true, Example = typeof(RecordRequestMessageExample), Description = "The request message payload for a record/publish")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: ContentTypes.ApplicationJson, bodyType: typeof(RecordResponseMessage), Example = typeof(RecordResponseMessageExample), Summary = "200 response", Description = "This returns the response of 'OK'")]
+        [OpenApiRequestBody(contentType: ContentTypes.ApplicationJson, bodyType: typeof(PublishRequestMessage), Required = true, Example = typeof(PublishRequestMessageExample), Description = "The request message payload for a record/publish")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: ContentTypes.ApplicationJson, bodyType: typeof(PublishResponseMessage), Example = typeof(PublishResponseMessageExample), Summary = "200 response", Description = "This returns the response of 'OK'")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: ContentTypes.ApplicationJson, bodyType: typeof(ErrorResponseMessage), Example = typeof(ErrorResponseMessageExample), Summary = "500 response", Description = "This returns the response of 'Internal Server Error'")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "400 response", Description = "This returns the response of 'Bad Request'")]
         public async Task<IActionResult> PublishRoutineAsync(
@@ -72,7 +72,7 @@ namespace GymLog.FunctionApp.Triggers
             [ServiceBus(GymLogTopicKey)] IAsyncCollector<ServiceBusMessage> collector,
             ILogger log)
         {
-            var request = await req.ToRequestMessageAsync<RecordRequestMessage>().ConfigureAwait(false);
+            var request = await req.ToRequestMessageAsync<PublishRequestMessage>().ConfigureAwait(false);
             var eventId = context.InvocationId;
             var spanId = request.SpanId;
             var correlationId = request.CorrelationId;
@@ -129,7 +129,7 @@ namespace GymLog.FunctionApp.Triggers
 
                 if (!records.Any())
                 {
-                    res = records.ToRecordResponseMessage(request, eventId);
+                    res = records.ToPublishResponseMessage(request, eventId);
 
                     log.LogData(LogLevel.Error, res.Value,
                                 EventType.RecordNotFound, EventStatusType.Failed, eventId,
@@ -146,7 +146,7 @@ namespace GymLog.FunctionApp.Triggers
                                       .OrderByDescending(p => p.Timestamp)
                                       .ToList();
 
-                res = entities.ToRecordResponseMessage(request, eventId);
+                res = entities.ToPublishResponseMessage(request, eventId);
 
                 log.LogData(LogLevel.Information, res.Value,
                             EventType.RecordPopulated, EventStatusType.Succeeded, eventId,
@@ -157,7 +157,7 @@ namespace GymLog.FunctionApp.Triggers
                 var messageId = Guid.NewGuid();
                 var subSpanId = Guid.NewGuid();
                 var timestamp = DateTimeOffset.UtcNow;
-                var message = (RoutineQueueMessage)(RecordResponseMessage)res.Value;
+                var message = (RoutineQueueMessage)(PublishResponseMessage)res.Value;
                 var msg = new ServiceBusMessage(message.ToJson())
                 {
                     CorrelationId = correlationId.ToString(),

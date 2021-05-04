@@ -8,13 +8,15 @@ namespace GymLog.FunctionApp.Models
     /// <summary>
     /// This represents the record entity for routine.
     /// </summary>
-    public class RoutineRecord
+    public class RoutineRecordItem : RecordItem
     {
         /// <summary>
-        /// Gets or sets the entity record ID.
+        /// Initializes a new instance of the <see cref="RoutineRecordItem"/> class.
         /// </summary>
-        [JsonProperty("id")]
-        public virtual Guid EntityId { get; set; }
+        public RoutineRecordItem()
+        {
+            this.ItemType = RecordItemType.Routine;
+        }
 
         /// <summary>
         /// Gets or sets the user principal name (UPN).

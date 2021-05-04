@@ -41,13 +41,13 @@ namespace GymLog.FunctionApp.Models
         public virtual List<Exercise> Exercises { get; set; }
 
         /// <summary>
-        /// Converts the <see cref="RoutineQueueMessage"/> object to the <see cref="RoutineRecord"/> object implicitly.
+        /// Converts the <see cref="RoutineQueueMessage"/> object to the <see cref="RoutineRecordItem"/> object implicitly.
         /// </summary>
         /// <param name="instance"><see cref="RoutineQueueMessage"/> object.</param>
-        /// <returns>Returns the <see cref="RoutineRecord"/> object.</returns>
-        public static implicit operator RoutineRecord(RoutineQueueMessage instance)
+        /// <returns>Returns the <see cref="RoutineRecordItem"/> object.</returns>
+        public static implicit operator RoutineRecordItem(RoutineQueueMessage instance)
         {
-            return new RoutineRecord()
+            return new RoutineRecordItem()
             {
                 Upn = instance.Upn,
                 CorrelationId = instance.CorrelationId,

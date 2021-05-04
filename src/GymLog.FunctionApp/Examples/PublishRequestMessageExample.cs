@@ -11,17 +11,17 @@ using Newtonsoft.Json.Serialization;
 namespace GymLog.FunctionApp.Examples
 {
     /// <summary>
-    /// This represents the example entity for the <see cref="RecordRequestMessage"/> object.
+    /// This represents the example entity for the <see cref="PublishRequestMessage"/> object.
     /// </summary>
-    public class RecordRequestMessageExample : OpenApiExample<RecordRequestMessage>
+    public class PublishRequestMessageExample : OpenApiExample<PublishRequestMessage>
     {
         /// <inheritdoc/>
-        public override IOpenApiExample<RecordRequestMessage> Build(NamingStrategy namingStrategy = null)
+        public override IOpenApiExample<PublishRequestMessage> Build(NamingStrategy namingStrategy = null)
         {
             this.Examples.Add(
                 OpenApiExampleResolver.Resolve(
                     "shoulder",
-                    new RecordRequestMessage()
+                    new PublishRequestMessage()
                     {
                         Upn = "exercise@gymlogs.com",
                         CorrelationId = Guid.Parse("36b5511c-f183-4eb3-b6b5-18cdf53417c9"),

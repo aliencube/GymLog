@@ -24,7 +24,7 @@ namespace GymLog.FunctionApp.Triggers
     /// <summary>
     /// This represents the Service Bus trigger entity to process records.
     /// </summary>
-    public class RecordServiceBusTrigger
+    public class IngestRoutineServiceBusTrigger
     {
         private const string GymLogTopicKey = "%AzureWebJobsServiceBusTopicName%";
         private const string GymLogSubscriptionKey = "%AzureWebJobsServiceBusSubscriptionName%";
@@ -33,11 +33,11 @@ namespace GymLog.FunctionApp.Triggers
         private readonly CosmosClient _client;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RecordServiceBusTrigger"/> class.
+        /// Initializes a new instance of the <see cref="IngestRoutineServiceBusTrigger"/> class.
         /// </summary>
         /// <param name="settings"><see cref="AppSettings"/> instance.</param>
         /// <param name="client"><see cref="CosmosClient"/> instance.</param>
-        public RecordServiceBusTrigger(AppSettings settings, CosmosClient client)
+        public IngestRoutineServiceBusTrigger(AppSettings settings, CosmosClient client)
         {
             this._settings = settings ?? throw new ArgumentNullException(nameof(settings));
             this._client = client ?? throw new ArgumentNullException(nameof(client));
@@ -49,7 +49,7 @@ namespace GymLog.FunctionApp.Triggers
         /// <param name="msg"><see cref="ServiceBusReceivedMessage"/> instance.</param>
         /// <param name="context"><see cref="ExecutionContext"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
-        [FunctionName(nameof(RecordServiceBusTrigger.IngestAsync))]
+        [FunctionName(nameof(IngestRoutineServiceBusTrigger.IngestAsync))]
         public async Task IngestAsync(
             [ServiceBusTrigger(GymLogTopicKey, GymLogSubscriptionKey)] ServiceBusReceivedMessage msg,
             ExecutionContext context,
@@ -88,9 +88,9 @@ namespace GymLog.FunctionApp.Triggers
                 var container = (Container) await db.CreateContainerIfNotExistsAsync(properties)
                                                     .ConfigureAwait(false);
 
-                var record = ((RoutineRecord) message).WithEntityId(messageId)
+                var record = ((RoutineRecordItem) message).WithEntityId(messageId)
                                                       .WithTimestamp(timestamp);
-                var response = await container.UpsertItemAsync<RoutineRecord>(record, new PartitionKey(record.Routine.ToString())).ConfigureAwait(false);
+                var response = await container.UpsertItemAsync<RoutineRecordItem>(record, new PartitionKey(record.Routine.ToString())).ConfigureAwait(false);
                 if (response.StatusCode >= HttpStatusCode.BadRequest)
                 {
                     throw new HttpRequestException(response.StatusCode.ToDisplayName());
