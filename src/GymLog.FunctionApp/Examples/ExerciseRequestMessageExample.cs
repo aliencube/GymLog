@@ -29,8 +29,9 @@ namespace GymLog.FunctionApp.Examples
                         Interface = InterfaceType.PowerAppsApp,
                         SpanId = Guid.Parse("0458130f-d474-492f-b2c3-e385596f9d9b"),
                         RoutineId = Guid.Parse("15638065-9ab4-4041-83dd-e34870f7f6e5"),
-                        Routine = RoutineType.Shoulder,
-                        Exercise = "Shoulder Press",
+                        Routine = "Daily Routine #1",
+                        Target = TargetType.Shoulder,
+                        Exercise = "Dumbbell Shoulder Press",
                         Sets = new List<ExerciseSet>()
                         {
                             new ExerciseSet() { Sequence = 1, Repetitions = 15, Weight = 10.0M, Unit = WeightUnitType.Lbs },

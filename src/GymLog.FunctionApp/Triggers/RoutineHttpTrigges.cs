@@ -85,6 +85,7 @@ namespace GymLog.FunctionApp.Triggers
                 EventName = EventType.RoutineCreated.ToDisplayName(),
                 RoutineId = routineId,
                 Routine = request.Routine,
+                Targets = request.Targets.ToJson(),
             };
 
             var res = default(ObjectResult);

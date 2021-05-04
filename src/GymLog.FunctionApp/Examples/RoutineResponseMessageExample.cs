@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using GymLog.FunctionApp.Models;
 using GymLog.FunctionApp.Traces;
@@ -20,7 +21,7 @@ namespace GymLog.FunctionApp.Examples
         {
             this.Examples.Add(
                 OpenApiExampleResolver.Resolve(
-                    "shoulder",
+                    "daily-routine-1",
                     new RoutineResponseMessage()
                     {
                         Upn = "exercise@gymlogs.com",
@@ -29,7 +30,8 @@ namespace GymLog.FunctionApp.Examples
                         SpanId = Guid.Parse("0458130f-d474-492f-b2c3-e385596f9d9b"),
                         EventId = Guid.Parse("93e8a2d5-dc0e-4603-897d-651eeb2969f8"),
                         RoutineId = Guid.Parse("15638065-9ab4-4041-83dd-e34870f7f6e5"),
-                        Routine = RoutineType.Shoulder,
+                        Routine = "Daily Routine #1",
+                        Targets = new List<TargetType>() { TargetType.Shoulder, TargetType.Chest },
                     },
                     namingStrategy
                 )

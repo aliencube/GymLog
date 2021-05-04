@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
@@ -19,6 +20,12 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the routine name.
         /// </summary>
         [JsonProperty("routine")]
-        public virtual RoutineType Routine { get; set; }
+        public virtual string Routine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of targets.
+        /// </summary>
+        [JsonProperty("targets")]
+        public virtual List<TargetType> Targets { get; set; }
     }
 }

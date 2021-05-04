@@ -30,13 +30,14 @@ namespace GymLog.FunctionApp.Examples
                         SpanId = Guid.Parse("0458130f-d474-492f-b2c3-e385596f9d9b"),
                         EventId = Guid.Parse("93e8a2d5-dc0e-4603-897d-651eeb2969f8"),
                         RoutineId = Guid.Parse("15638065-9ab4-4041-83dd-e34870f7f6e5"),
-                        Routine = RoutineType.Shoulder,
+                        Routine = "Daily Routine #1",
                         Exercises = new List<Exercise>()
                         {
                             new Exercise()
                             {
                                 ExerciseId = Guid.Parse("efdb1a4f-1641-4b7d-8f0a-206e620c0ff3"),
-                                Name = "Shoulder Press",
+                                Name = "Dumbbell Shoulder Press",
+                                Target = TargetType.Shoulder,
                                 Sets = new List<ExerciseSet>()
                                 {
                                     new ExerciseSet() { Sequence = 1, Repetitions = 15, Weight = 10.0M, Unit = WeightUnitType.Lbs },

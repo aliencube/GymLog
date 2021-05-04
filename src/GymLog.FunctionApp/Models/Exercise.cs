@@ -23,6 +23,11 @@ namespace GymLog.FunctionApp.Models
         public virtual string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the target.
+        /// </summary>
+        public virtual TargetType Target { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of exercise sets.
         /// </summary>
         [JsonProperty("sets")]

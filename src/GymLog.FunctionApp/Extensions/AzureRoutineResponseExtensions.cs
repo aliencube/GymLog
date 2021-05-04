@@ -56,6 +56,7 @@ namespace GymLog.FunctionApp.Extensions
                 EventId = eventId,
                 RoutineId = routineId,
                 Routine = request.Routine,
+                Targets = request.Targets,
             };
 
             return new ObjectResult(msg) { StatusCode = (int)httpStatusCode };

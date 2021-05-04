@@ -19,6 +19,6 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the routine name.
         /// </summary>
         [JsonProperty("routine")]
-        public virtual RoutineType Routine { get; set; }
+        public virtual string Routine { get; set; }
     }
 }

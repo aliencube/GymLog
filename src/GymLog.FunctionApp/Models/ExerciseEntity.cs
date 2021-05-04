@@ -13,9 +13,14 @@ namespace GymLog.FunctionApp.Models
         public virtual Guid RoutineId { get; set; }
 
         /// <summary>
-        /// Gets or sets the routine type.
+        /// Gets or sets the routine name.
         /// </summary>
-        public virtual RoutineType Routine { get; set; }
+        public virtual string Routine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target.
+        /// </summary>
+        public virtual TargetType Target { get; set; }
 
         /// <summary>
         /// Gets or sets the exercise ID.

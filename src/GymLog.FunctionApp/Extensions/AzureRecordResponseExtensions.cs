@@ -50,6 +50,7 @@ namespace GymLog.FunctionApp.Extensions
                                             {
                                                 ExerciseId = p.ExerciseId,
                                                 Name = p.Exercise,
+                                                Target = p.Target,
                                                 Sets = p.Sets.FromJson<List<ExerciseSet>>(),
                                                 AdditionalNotes = p.AdditionalNotes,
                                             }

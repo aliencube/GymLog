@@ -20,7 +20,7 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the routine name.
         /// </summary>
         [JsonProperty("routine")]
-        public virtual RoutineType Routine { get; set; }
+        public virtual string Routine { get; set; }
 
         /// <summary>
         /// Gets or sets the exercise ID.
@@ -33,6 +33,12 @@ namespace GymLog.FunctionApp.Models
         /// </summary>
         [JsonProperty("exercise")]
         public virtual string Exercise { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target.
+        /// </summary>
+        [JsonProperty("target")]
+        public virtual TargetType Target { get; set; }
 
         /// <summary>
         /// Gets or sets the list of the exercise sets.

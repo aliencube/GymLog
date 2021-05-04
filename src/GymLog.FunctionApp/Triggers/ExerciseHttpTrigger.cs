@@ -100,6 +100,7 @@ namespace GymLog.FunctionApp.Triggers
                 EventName = EventType.ExerciseCreated.ToDisplayName(),
                 RoutineId = request.RoutineId,
                 Routine = request.Routine,
+                Target = request.Target,
                 ExerciseId = exerciseId,
                 Exercise = request.Exercise,
                 Sets = request.Sets.ToJson(),

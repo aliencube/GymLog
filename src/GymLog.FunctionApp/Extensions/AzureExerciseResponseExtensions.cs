@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 
 using Azure;
@@ -57,6 +56,7 @@ namespace GymLog.FunctionApp.Extensions
                 EventId = eventId,
                 RoutineId = request.RoutineId,
                 Routine = request.Routine,
+                Target = request.Target,
                 ExerciseId = exerciseId,
                 Exercise = request.Exercise,
                 Sets  = request.Sets,

@@ -4,28 +4,28 @@ using Newtonsoft.Json.Converters;
 namespace GymLog.FunctionApp.Models
 {
     /// <summary>
-    /// This specifies the routine type.
+    /// This specifies the type type.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum RoutineType
+    public enum TargetType
     {
         /// <summary>
-        /// Identifies the back routine.
+        /// Identifies targetting the back.
         /// </summary>
         Back = 0,
 
         /// <summary>
-        /// Identifies the chest routine.
+        /// Identifies targetting the chest.
         /// </summary>
         Chest = 1,
 
         /// <summary>
-        /// Identifies the shoulder routine.
+        /// Identifies targetting the shoulder.
         /// </summary>
         Shoulder = 2,
 
         /// <summary>
-        /// Identifies the core routine.
+        /// Identifies targetting the core.
         /// </summary>
         Core = 3,
     }

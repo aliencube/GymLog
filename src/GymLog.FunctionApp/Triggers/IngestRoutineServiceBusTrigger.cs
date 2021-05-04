@@ -90,7 +90,7 @@ namespace GymLog.FunctionApp.Triggers
 
                 var record = ((RoutineRecordItem) message).WithEntityId(messageId)
                                                       .WithTimestamp(timestamp);
-                var response = await container.UpsertItemAsync<RoutineRecordItem>(record, new PartitionKey(record.Routine.ToString())).ConfigureAwait(false);
+                var response = await container.UpsertItemAsync<RoutineRecordItem>(record, new PartitionKey(record.ItemType.ToString())).ConfigureAwait(false);
                 if (response.StatusCode >= HttpStatusCode.BadRequest)
                 {
                     throw new HttpRequestException(response.StatusCode.ToDisplayName());
