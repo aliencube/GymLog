@@ -1,6 +1,7 @@
 using System;
 
 using GymLog.FunctionApp.Models;
+using GymLog.FunctionApp.Traces;
 
 namespace GymLog.FunctionApp.Extensions
 {
@@ -17,6 +18,18 @@ namespace GymLog.FunctionApp.Extensions
         public static RoutineRecordItem WithEntityId(this RoutineRecordItem value, Guid entityId)
         {
             value.EntityId = entityId;
+
+            return value;
+        }
+
+        /// <summary>
+        /// Sets the timestamp in a fluent way.
+        /// </summary>
+        /// <param name="interface">Interface type value.</param>
+        /// <returns>Returns the <see cref="RoutineRecordItem"/> object.</returns>
+        public static RoutineRecordItem WithInterface(this RoutineRecordItem value, InterfaceType @interface)
+        {
+            value.Interface = @interface;
 
             return value;
         }

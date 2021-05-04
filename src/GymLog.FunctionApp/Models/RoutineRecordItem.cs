@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using GymLog.FunctionApp.Traces;
+
 using Newtonsoft.Json;
 
 namespace GymLog.FunctionApp.Models
@@ -29,6 +31,12 @@ namespace GymLog.FunctionApp.Models
         /// </summary>
         [JsonProperty("correlationId")]
         public virtual Guid CorrelationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interface.
+        /// </summary>
+        [JsonProperty("interface")]
+        public virtual InterfaceType Interface { get; set; }
 
         /// <summary>
         /// Gets or sets the routine ID.

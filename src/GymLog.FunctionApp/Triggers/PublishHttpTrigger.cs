@@ -102,6 +102,7 @@ namespace GymLog.FunctionApp.Triggers
                 Upn = upn,
                 CorrelationId = correlationId,
                 SpanId = spanId,
+                Interface = @interface,
                 EventId = eventId,
                 EventName = EventType.RoutineCompleted.ToDisplayName(),
                 RoutineId = routineId,

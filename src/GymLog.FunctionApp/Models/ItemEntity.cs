@@ -3,6 +3,8 @@ using System;
 using Azure;
 using Azure.Data.Tables;
 
+using GymLog.FunctionApp.Traces;
+
 namespace GymLog.FunctionApp.Models
 {
     /// <summary>
@@ -34,6 +36,11 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the span ID.
         /// </summary>
         public virtual Guid SpanId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the interface.
+        /// </summary>
+        public virtual InterfaceType Interface { get; set; }
 
         /// <summary>
         /// Gets or sets the event ID.
