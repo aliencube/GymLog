@@ -84,6 +84,15 @@ resource fncapp 'Microsoft.Web/sites@2020-12-01' = {
         serverFarmId: consumption.id
         httpsOnly: true
         siteConfig: {
+            alwaysOn: true
+            cors: {
+                allowedOrigins: [
+                    'https://functions.azure.com'
+                    'https://functions-staging.azure.com'
+                    'https://functions-next.azure.com'
+                    'https://flow.microsoft.com'
+                ]
+            }
             appSettings: [
                 // Common Settings
                 {
