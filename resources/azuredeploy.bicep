@@ -23,7 +23,7 @@ param cosmosDbPrimaryRegion string = 'Korea Central'
 param cosmosDbCapability string = 'EnableServerless'
 param cosmosDbName string = 'GymLog'
 param cosmosDbContainerName string = 'gymlogs'
-param cosmosDbPartitionKeyPath string = '/routine'
+param cosmosDbPartitionKeyPath string = '/itemType'
 
 // Log Analytics Workspace
 param workspaceToProvision bool = true
