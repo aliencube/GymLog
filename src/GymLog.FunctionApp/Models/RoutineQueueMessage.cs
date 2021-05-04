@@ -11,6 +11,12 @@ namespace GymLog.FunctionApp.Models
     public class RoutineQueueMessage
     {
         /// <summary>
+        /// Gets or sets the user principal name (UPN).
+        /// </summary>
+        [JsonProperty("upn")]
+        public virtual string Upn { get; set; }
+
+        /// <summary>
         /// Gets or sets the correlation ID.
         /// </summary>
         [JsonProperty("correlationId")]
@@ -32,6 +38,23 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the list of exercises.
         /// </summary>
         [JsonProperty("exercises")]
-        public virtual List<Exercise> Exercises { get; set;}
+        public virtual List<Exercise> Exercises { get; set; }
+
+        /// <summary>
+        /// Converts the <see cref="RoutineQueueMessage"/> object to the <see cref="RoutineRecord"/> object implicitly.
+        /// </summary>
+        /// <param name="instance"><see cref="RoutineQueueMessage"/> object.</param>
+        /// <returns>Returns the <see cref="RoutineRecord"/> object.</returns>
+        public static implicit operator RoutineRecord(RoutineQueueMessage instance)
+        {
+            return new RoutineRecord()
+            {
+                Upn = instance.Upn,
+                CorrelationId = instance.CorrelationId,
+                RoutineId = instance.RoutineId,
+                Routine = instance.Routine,
+                Exercises = instance.Exercises,
+            };
+        }
     }
 }

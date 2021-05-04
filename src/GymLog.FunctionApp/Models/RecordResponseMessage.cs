@@ -37,6 +37,7 @@ namespace GymLog.FunctionApp.Models
         {
             var message = new RoutineQueueMessage()
             {
+                Upn = instance.Upn,
                 CorrelationId = instance.CorrelationId,
                 RoutineId = instance.RoutineId,
                 Routine = instance.Routine,

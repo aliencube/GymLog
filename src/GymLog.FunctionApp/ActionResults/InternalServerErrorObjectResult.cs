@@ -28,11 +28,12 @@ namespace GymLog.FunctionApp.ActionResults
         {
             var message = new ErrorResponseMessage()
             {
-                    CorrelationId = instance.CorrelationId,
-                    Interface = instance.Interface,
-                    SpanId = instance.SpanId,
-                    EventId = instance.EventId,
-                    Message = instance.Message,
+                Upn = instance.Upn,
+                CorrelationId = instance.CorrelationId,
+                Interface = instance.Interface,
+                SpanId = instance.SpanId,
+                EventId = instance.EventId,
+                Message = instance.Message,
             };
             var result = new ObjectResult(message) { StatusCode = instance.StatusCode };
 

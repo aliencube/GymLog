@@ -21,6 +21,11 @@ namespace GymLog.FunctionApp.Models
         public virtual string RowKey { get; set; }
 
         /// <summary>
+        /// Gets or sets the user principal name (UPN).
+        /// </summary>
+        public virtual string Upn { get; set; }
+
+        /// <summary>
         /// Gets or sets the correlation ID.
         /// </summary>
         public virtual Guid CorrelationId { get; set; }

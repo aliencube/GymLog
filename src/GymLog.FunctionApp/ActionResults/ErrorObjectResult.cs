@@ -13,6 +13,11 @@ namespace GymLog.FunctionApp.ActionResults
     public class ErrorObjectResult
     {
         /// <summary>
+        /// Gets or sets the user principal name (UPN).
+        /// </summary>
+        public virtual string Upn { get; set; }
+
+        /// <summary>
         /// Gets or sets the correlation ID.
         /// </summary>
         public virtual Guid CorrelationId { get; set; }
@@ -51,11 +56,12 @@ namespace GymLog.FunctionApp.ActionResults
         {
             var message = new ErrorResponseMessage()
             {
-                    CorrelationId = instance.CorrelationId,
-                    Interface = instance.Interface,
-                    SpanId = instance.SpanId,
-                    EventId = instance.EventId,
-                    Message = instance.Message,
+                Upn = instance.Upn,
+                CorrelationId = instance.CorrelationId,
+                Interface = instance.Interface,
+                SpanId = instance.SpanId,
+                EventId = instance.EventId,
+                Message = instance.Message,
             };
             var result = new ObjectResult(message) { StatusCode = instance.StatusCode };
 

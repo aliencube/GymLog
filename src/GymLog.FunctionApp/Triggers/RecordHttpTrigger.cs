@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -75,6 +76,7 @@ namespace GymLog.FunctionApp.Triggers
             var eventId = context.InvocationId;
             var spanId = request.SpanId;
             var correlationId = request.CorrelationId;
+            var upn = request.Upn;
             var @interface = request.Interface;
 
             log.LogData(LogLevel.Information, request,
@@ -97,6 +99,7 @@ namespace GymLog.FunctionApp.Triggers
             {
                 PartitionKey = correlationId.ToString(),
                 RowKey = eventId.ToString(),
+                Upn = upn,
                 CorrelationId = correlationId,
                 SpanId = spanId,
                 EventId = eventId,
@@ -126,7 +129,7 @@ namespace GymLog.FunctionApp.Triggers
 
                 if (!records.Any())
                 {
-                    res = records.ToRecordResponseMessage(correlationId, @interface, spanId, eventId, request.RoutineId, request.Routine);
+                    res = records.ToRecordResponseMessage(request, eventId);
 
                     log.LogData(LogLevel.Error, res.Value,
                                 EventType.RecordNotFound, EventStatusType.Failed, eventId,
@@ -143,7 +146,7 @@ namespace GymLog.FunctionApp.Triggers
                                       .OrderByDescending(p => p.Timestamp)
                                       .ToList();
 
-                res = entities.ToRecordResponseMessage(correlationId, @interface, spanId, eventId, request.RoutineId, request.Routine);
+                res = entities.ToRecordResponseMessage(request, eventId);
 
                 log.LogData(LogLevel.Information, res.Value,
                             EventType.RecordPopulated, EventStatusType.Succeeded, eventId,
@@ -153,15 +156,18 @@ namespace GymLog.FunctionApp.Triggers
 
                 var messageId = Guid.NewGuid();
                 var subSpanId = Guid.NewGuid();
+                var timestamp = DateTimeOffset.UtcNow;
                 var message = (RoutineQueueMessage)(RecordResponseMessage)res.Value;
                 var msg = new ServiceBusMessage(message.ToJson())
                 {
                     CorrelationId = correlationId.ToString(),
                     MessageId = messageId.ToString(),
+                    ContentType = ContentTypes.ApplicationJson,
                 };
                 msg.ApplicationProperties.Add("pubSpanId", spanId);
                 msg.ApplicationProperties.Add("subSpanId", subSpanId);
                 msg.ApplicationProperties.Add("interface", @interface.ToString());
+                msg.ApplicationProperties.Add("timestamp", timestamp.ToString(CultureInfo.InvariantCulture));
 
                 await collector.AddAsync(msg).ConfigureAwait(false);
 
@@ -174,7 +180,7 @@ namespace GymLog.FunctionApp.Triggers
 
                 var response = await table.UpsertEntityAsync(entity).ConfigureAwait(false);
 
-                var r = response.ToRoutineResponseMessage(correlationId, @interface, spanId, eventId, entity.RoutineId, entity.Routine);
+                var r = response.ToRoutineResponseMessage(request, eventId, entity.RoutineId);
 
                 log.LogData(response.Status.ToLogLevel(), r.Value,
                             response.Status.ToRoutineCompletedEventType(), response.Status.ToEventStatusType(), eventId,
@@ -187,6 +193,7 @@ namespace GymLog.FunctionApp.Triggers
             {
                 res = new InternalServerErrorObjectResult()
                 {
+                    Upn = upn,
                     CorrelationId = correlationId,
                     Interface = @interface,
                     SpanId = spanId,

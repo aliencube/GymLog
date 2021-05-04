@@ -69,6 +69,7 @@ namespace GymLog.FunctionApp.Triggers
             var eventId = context.InvocationId;
             var spanId = request.SpanId;
             var correlationId = request.CorrelationId;
+            var upn = request.Upn;
             var @interface = request.Interface;
 
             log.LogData(LogLevel.Information, request,
@@ -92,6 +93,7 @@ namespace GymLog.FunctionApp.Triggers
             {
                 PartitionKey = correlationId.ToString(),
                 RowKey = eventId.ToString(),
+                Upn = upn,
                 CorrelationId = correlationId,
                 SpanId = spanId,
                 EventId = eventId,
@@ -116,7 +118,7 @@ namespace GymLog.FunctionApp.Triggers
                 var table = this._client.GetTableClient(this._settings.GymLog.StorageAccount.Table.TableName);
                 var response = await table.UpsertEntityAsync(entity).ConfigureAwait(false);
 
-                res = response.ToExerciseResponseMessage(correlationId, @interface, spanId, eventId, entity.RoutineId, entity.Routine, entity.ExerciseId, entity.Exercise, entity.Sets, entity.AdditionalNotes);
+                res = response.ToExerciseResponseMessage(request, entity.EventId, entity.ExerciseId);
 
                 log.LogData(response.Status.ToLogLevel(), res.Value,
                             response.Status.ToExerciseEventType(), response.Status.ToEventStatusType(), eventId,
@@ -129,6 +131,7 @@ namespace GymLog.FunctionApp.Triggers
             {
                 res = new InternalServerErrorObjectResult()
                 {
+                    Upn = upn,
                     CorrelationId = correlationId,
                     Interface = @interface,
                     SpanId = spanId,

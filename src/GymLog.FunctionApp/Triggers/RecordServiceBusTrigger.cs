@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -59,7 +60,9 @@ namespace GymLog.FunctionApp.Triggers
             var eventId = context.InvocationId;
             var spanId = (Guid)msg.ApplicationProperties["subSpanId"];
             var correlationId = Guid.Parse(msg.CorrelationId);
+            var upn = message.Upn;
             var @interface = Enum.Parse<InterfaceType>(msg.ApplicationProperties["interface"] as string, ignoreCase: true);
+            var timestamp = DateTimeOffset.Parse(msg.ApplicationProperties["timestamp"] as string, CultureInfo.InvariantCulture);
 
             log.LogData(LogLevel.Information, message,
                         EventType.MessageReceived, EventStatusType.Succeeded, eventId,
@@ -85,8 +88,9 @@ namespace GymLog.FunctionApp.Triggers
                 var container = (Container) await db.CreateContainerIfNotExistsAsync(properties)
                                                     .ConfigureAwait(false);
 
-                var record = new RoutineRecord(message) { EntityId = messageId };
-                var response = await container.UpsertItemAsync<RoutineQueueMessage>(record, new PartitionKey(record.Routine.ToString())).ConfigureAwait(false);
+                var record = ((RoutineRecord) message).WithEntityId(messageId)
+                                                      .WithTimestamp(timestamp);
+                var response = await container.UpsertItemAsync<RoutineRecord>(record, new PartitionKey(record.Routine.ToString())).ConfigureAwait(false);
                 if (response.StatusCode >= HttpStatusCode.BadRequest)
                 {
                     throw new HttpRequestException(response.StatusCode.ToDisplayName());

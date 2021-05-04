@@ -12,6 +12,12 @@ namespace GymLog.FunctionApp.Models
     public abstract class RequestMessage
     {
         /// <summary>
+        /// Gets or sets the user principal name (UPN).
+        /// </summary>
+        [JsonProperty("upn")]
+        public virtual string Upn { get; set; }
+
+        /// <summary>
         /// Gets or sets the correlation ID.
         /// </summary>
         [JsonProperty("correlationId")]

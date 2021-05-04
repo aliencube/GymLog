@@ -21,30 +21,23 @@ namespace GymLog.FunctionApp.Extensions
         /// Gets the <see cref="ObjectResult"/> object from the list of <see cref="ExerciseEntity"/> objects.
         /// </summary>
         /// <param name="entities">List of <see cref="ExerciseEntity"/> objects.</param>
-        /// <param name="correlationId">Correlation ID.</param>
-        /// <param name="interface"><see cref="InterfaceType"/> value.</param>
-        /// <param name="spanId">Span ID.</param>
+        /// <param name="request"><see cref="RecordRequestMessage"/> object.</param>
         /// <param name="eventId">Event ID.</param>
-        /// <param name="routineId">Routine ID.</param>
-        /// <param name="routine"><see cref="RoutineType"/> value.</param>
         /// <param name="httpStatusCode"><see cref="HttpStatusCode"/> value.</param>
         /// <returns>Returns the <see cref="ObjectResult"/> object.</returns>
         public static ObjectResult ToRecordResponseMessage(this List<ExerciseEntity> entities,
-                                                                Guid correlationId,
-                                                                InterfaceType @interface,
-                                                                Guid spanId,
+                                                                RecordRequestMessage request,
                                                                 Guid eventId,
-                                                                Guid routineId,
-                                                                RoutineType routine,
                                                                 HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         {
             if (!entities.Any())
             {
                 var result = new ErrorObjectResult()
                 {
-                    CorrelationId = correlationId,
-                    Interface = @interface,
-                    SpanId = spanId,
+                    Upn = request.Upn,
+                    CorrelationId = request.CorrelationId,
+                    Interface = request.Interface,
+                    SpanId = request.SpanId,
                     EventId = eventId,
                     Message = EventType.RecordNotFound.ToDisplayName(),
                     StatusCode = (int)HttpStatusCode.NotFound,
@@ -65,12 +58,13 @@ namespace GymLog.FunctionApp.Extensions
 
             var msg = new RecordResponseMessage()
             {
-                CorrelationId = correlationId,
-                Interface = @interface,
-                SpanId = spanId,
+                Upn = request.Upn,
+                CorrelationId = request.CorrelationId,
+                Interface = request.Interface,
+                SpanId = request.SpanId,
                 EventId = eventId,
-                RoutineId = routineId,
-                Routine = routine,
+                RoutineId = request.RoutineId,
+                Routine = request.Routine,
                 Exercises = exercises,
             };
 

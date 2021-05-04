@@ -21,37 +21,25 @@ namespace GymLog.FunctionApp.Extensions
         /// Gets the <see cref="ObjectResult"/> object containing the <see cref="ExerciseResponseMessage"/> object.
         /// </summary>
         /// <param name="response"><see cref="Response"/> object.</param>
-        /// <param name="correlationId">Correlation ID.</param>
-        /// <param name="interface"><see cref="InterfaceType"/> value.</param>
-        /// <param name="spanId">Span ID.</param>
+        /// <param name="request"><see cref="ExerciseRequestMessage"/> object.</param>
         /// <param name="eventId">Event ID.</param>
-        /// <param name="routineId">Routine ID.</param>
         /// <param name="exerciseId">Exercise ID.</param>
-        /// <param name="exercise">Exercise name.</param>
-        /// <param name="sets">List of exercise sets.</param>
-        /// <param name="additionalNotes">Additional notes.</param>
         /// <param name="httpStatusCode"><see cref="HttpStatusCode"/> value.</param>
         /// <returns>Returns the <see cref="ObjectResult"/> object.</returns>
         public static ObjectResult ToExerciseResponseMessage(this Response response,
-                                                                  Guid correlationId,
-                                                                  InterfaceType @interface,
-                                                                  Guid spanId,
+                                                                  ExerciseRequestMessage request,
                                                                   Guid eventId,
-                                                                  Guid routineId,
-                                                                  RoutineType routine,
                                                                   Guid exerciseId,
-                                                                  string exercise,
-                                                                  string sets,
-                                                                  string additionalNotes,
                                                                   HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         {
             if (response.Status >= (int)HttpStatusCode.BadRequest)
             {
                 var result = new ErrorObjectResult()
                 {
-                    CorrelationId = correlationId,
-                    Interface = @interface,
-                    SpanId = spanId,
+                    Upn = request.Upn,
+                    CorrelationId = request.CorrelationId,
+                    Interface = request.Interface,
+                    SpanId = request.SpanId,
                     EventId = eventId,
                     Message = $"{response.Status}: {response.ReasonPhrase}",
                     StatusCode = response.Status,
@@ -62,16 +50,17 @@ namespace GymLog.FunctionApp.Extensions
 
             var msg = new ExerciseResponseMessage()
             {
-                CorrelationId = correlationId,
-                Interface = @interface,
-                SpanId = spanId,
+                Upn = request.Upn,
+                CorrelationId = request.CorrelationId,
+                Interface = request.Interface,
+                SpanId = request.SpanId,
                 EventId = eventId,
-                RoutineId = routineId,
-                Routine = routine,
+                RoutineId = request.RoutineId,
+                Routine = request.Routine,
                 ExerciseId = exerciseId,
-                Exercise = exercise,
-                Sets  = sets.FromJson<List<ExerciseSet>>(),
-                AdditionalNotes = additionalNotes,
+                Exercise = request.Exercise,
+                Sets  = request.Sets,
+                AdditionalNotes = request.AdditionalNotes,
             };
 
             return new ObjectResult(msg) { StatusCode = (int)httpStatusCode };
