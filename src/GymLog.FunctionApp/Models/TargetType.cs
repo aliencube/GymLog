@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -10,23 +12,34 @@ namespace GymLog.FunctionApp.Models
     public enum TargetType
     {
         /// <summary>
-        /// Identifies targetting the back.
+        /// Identifies targetting the full body.
         /// </summary>
-        Back = 0,
+        [EnumMember(Value = "Full Body")]
+        FullBody = 0,
 
         /// <summary>
-        /// Identifies targetting the chest.
+        /// Identifies targetting the leg.
         /// </summary>
-        Chest = 1,
-
-        /// <summary>
-        /// Identifies targetting the shoulder.
-        /// </summary>
-        Shoulder = 2,
+        Leg = 1,
 
         /// <summary>
         /// Identifies targetting the core.
         /// </summary>
-        Core = 3,
+        Core = 2,
+
+        /// <summary>
+        /// Identifies targetting the back.
+        /// </summary>
+        Back = 3,
+
+        /// <summary>
+        /// Identifies targetting the chest.
+        /// </summary>
+        Chest = 4,
+
+        /// <summary>
+        /// Identifies targetting the shoulder.
+        /// </summary>
+        Shoulder = 5,
     }
 }
