@@ -22,6 +22,7 @@
 
     "OpenApi__Version": "v2",
     "OpenApi__DocVersion": "v1.0.0",
+    "OpenApi__DocTitle": "GymLog Publisher Interface",
 
     "ForceError__Publisher__Routine": "false",
     "ForceError__Publisher__Exercise": "false",
