@@ -23,6 +23,7 @@ param gymLogPartitionKeyPath string = '/routine'
 
 param openApiVersion string = 'v2'
 param openApiDocVersion string = 'v1.0.0'
+param openApiDocTitle string = 'GymLogs Publisher Interface'
 
 param forceErrorRoutine bool = false
 param forceErrorExercise bool = false
@@ -67,6 +68,7 @@ var functionApp = {
     openapi: {
         version: openApiVersion
         docVersion: openApiDocVersion
+        docTitle: openApiDocTitle
     }
     errorEnforcement: {
         routine: forceErrorRoutine
@@ -181,6 +183,10 @@ resource fncapp 'Microsoft.Web/sites@2020-12-01' = {
                 {
                     name:  'OpenApi__DocVersion'
                     value: functionApp.openapi.docVersion
+                }
+                {
+                    name:  'OpenApi__DocTitle'
+                    value: functionApp.openapi.docTitle
                 }
                 // Force Error Settings
                 {
