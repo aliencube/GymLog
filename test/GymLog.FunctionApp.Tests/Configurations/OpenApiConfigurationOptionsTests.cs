@@ -13,13 +13,12 @@ namespace GymLog.FunctionApp.Tests.Configurations
     [TestClass]
     public class OpenApiConfigurationOptionsTests
     {
-        private const string OpenApiVersionKey = "OpenApi__Version";
-        private const string OpenApiDocVersionKey = "OpenApi__DocVersion";
-        private const string OpenApiDocTitleKey = "OpenApi__DocTitle";
-
         [TestMethod]
         public void Given_No_OpenApi_DocValues_When_Instantiated_Then_It_Should_Return_Result()
         {
+            Environment.SetEnvironmentVariable(AppSettingsKeys.OpenApiDocVersionKey, null);
+            Environment.SetEnvironmentVariable(AppSettingsKeys.OpenApiDocTitleKey, null);
+
             var docVersion = "1.0.0";
             var docTitle = Assembly.GetAssembly(typeof(OpenApiConfigurationOptions)).GetName().Name;
 
@@ -35,8 +34,8 @@ namespace GymLog.FunctionApp.Tests.Configurations
         [DataRow("hello world", "lorem ipsum")]
         public void Given_OpenApi_DocValues_When_Instantiated_Then_It_Should_Return_Result(string docVersion, string docTitle)
         {
-            Environment.SetEnvironmentVariable(OpenApiDocVersionKey, docVersion);
-            Environment.SetEnvironmentVariable(OpenApiDocTitleKey, docTitle);
+            Environment.SetEnvironmentVariable(AppSettingsKeys.OpenApiDocVersionKey, docVersion);
+            Environment.SetEnvironmentVariable(AppSettingsKeys.OpenApiDocTitleKey, docTitle);
 
             var options = new OpenApiConfigurationOptions();
 
@@ -49,6 +48,8 @@ namespace GymLog.FunctionApp.Tests.Configurations
         [TestMethod]
         public void Given_No_OpenApi_Version_When_Instantiated_Then_It_Should_Return_Result()
         {
+            Environment.SetEnvironmentVariable(AppSettingsKeys.OpenApiVersionKey, null);
+
             var version = OpenApiVersionType.V2;
 
             var options = new OpenApiConfigurationOptions();
@@ -63,7 +64,7 @@ namespace GymLog.FunctionApp.Tests.Configurations
         [DataRow(OpenApiVersionType.V3)]
         public void Given_OpenApi_Version_When_Instantiated_Then_It_Should_Return_Result(OpenApiVersionType version)
         {
-            Environment.SetEnvironmentVariable(OpenApiVersionKey, version.ToString().ToLowerInvariant());
+            Environment.SetEnvironmentVariable(AppSettingsKeys.OpenApiVersionKey, version.ToString().ToLowerInvariant());
 
             var options = new OpenApiConfigurationOptions();
 

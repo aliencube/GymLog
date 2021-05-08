@@ -25,7 +25,7 @@ namespace GymLog.FunctionApp.Configurations
             this.Info = new OpenApiInfo()
             {
                 Version = Environment.GetEnvironmentVariable(OpenApiDocVersionKey) ?? OpenApiConfigurationOptions.DefaultDocVersion(),
-                Title = Environment.GetEnvironmentVariable(OpenApiDocTitleKey) ?? OpenApiConfigurationOptions.DefaultDocTitle(Assembly.GetAssembly(this.GetType())),
+                Title = Environment.GetEnvironmentVariable(OpenApiDocTitleKey) ?? OpenApiConfigurationOptions.DefaultDocTitle(typeof(OpenApiConfigurationOptions)),
                 Description = "Publisher interface that accepts requests from front-end applications including a test harness app, Power Apps app or web app.",
                 TermsOfService = new Uri("https://github.com/aliencube/GymLog"),
                 Contact = new OpenApiContact()
@@ -66,8 +66,10 @@ namespace GymLog.FunctionApp.Configurations
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         /// <returns>Returns the default OpenAPI document title - assembly name.</returns>
-        public static string DefaultDocTitle(Assembly assembly)
+        public static string DefaultDocTitle(Type type)
         {
+            var assembly = Assembly.GetAssembly(type);
+
             return assembly.GetName().Name;
         }
 

@@ -9,14 +9,6 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class AppSettings
     {
-        private const string StorageAccountKey = "AzureWebJobsStorage";
-        private const string ServiceBusKey = "AzureWebJobsServiceBus";
-        private const string CosmosDBKey = "CosmosDbConnection";
-        private const string AppInsightsKey = "APPLICATIONINSIGHTS_CONNECTION_STRING";
-        private const string GymLogKey = "GymLog";
-        private const string OpenApiKey = "OpenApi";
-        private const string ForceErrorKey = "ForceError";
-
         /// <summary>
         /// Gets the <see cref="GymLogSettings"/> object.
         /// </summary>
@@ -64,12 +56,10 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class StorageAccountSettings
     {
-        private const string StorageAccountKey = "AzureWebJobsStorage";
-
         /// <summary>
         /// Gets or sets the connection string.
         /// </summary>
-        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(StorageAccountKey);
+        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.StorageAccountKey) ?? string.Empty;
 
         /// <summary>
         /// Gets or sets the <see cref="TableStorageSettings"/> object.
@@ -82,12 +72,10 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class TableStorageSettings
     {
-        private const string GymLogTableKey = "GymLog__StorageAccount__Table__TableName";
-
         /// <summary>
         /// Gets or sets the table name.
         /// </summary>
-        public virtual string TableName { get; set; } = Environment.GetEnvironmentVariable(GymLogTableKey);
+        public virtual string TableName { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.GymLogTableKey) ?? string.Empty;
     }
 
     /// <summary>
@@ -95,24 +83,20 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class ServiceBusSettings
     {
-        private const string ServiceBusKey = "AzureWebJobsServiceBus";
-        private const string GymLogTopicKey = "GymLog__ServiceBus__TopicName";
-        private const string GymLogSubscriptionKey = "GymLog__ServiceBus__SubscriptionName";
-
         /// <summary>
         /// Gets or sets the connection string.
         /// </summary>
-        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(ServiceBusKey);
+        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.ServiceBusKey) ?? string.Empty;
 
         /// <summary>
         /// Gets or sets the topic name.
         /// </summary>
-        public virtual string TopicName { get; set; } = Environment.GetEnvironmentVariable(GymLogTopicKey);
+        public virtual string TopicName { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.GymLogTopicKey) ?? string.Empty;
 
         /// <summary>
         /// Gets or sets the subscription name.
         /// </summary>
-        public virtual string SubscriptionName { get; set; } = Environment.GetEnvironmentVariable(GymLogSubscriptionKey);
+        public virtual string SubscriptionName { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.GymLogSubscriptionKey) ?? string.Empty;
     }
 
     /// <summary>
@@ -120,30 +104,25 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class CosmosDBSettings
     {
-        private const string CosmosDBKey = "CosmosDbConnection";
-        private const string GymLogDatabaseNameKey = "GymLog__CosmosDB__DatabaseName";
-        private const string GymLogContainerKey = "GymLog__CosmosDB__ContainerName";
-        private const string GymLogPartitionKeyPathKey = "GymLog__CosmosDB__PartitionKeyPath";
-
         /// <summary>
         /// Gets or sets the connection string.
         /// </summary>
-        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(CosmosDBKey);
+        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.CosmosDBKey) ?? string.Empty;
 
         /// <summary>
         /// Gets or sets the database name.
         /// </summary>
-        public virtual string DatabaseName { get; set; } = Environment.GetEnvironmentVariable(GymLogDatabaseNameKey);
+        public virtual string DatabaseName { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.GymLogDatabaseNameKey) ?? string.Empty;
 
         /// <summary>
         /// Gets or sets the container name.
         /// </summary>
-        public virtual string ContainerName { get; set; } = Environment.GetEnvironmentVariable(GymLogContainerKey);
+        public virtual string ContainerName { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.GymLogContainerKey) ?? string.Empty;
 
         /// <summary>
         /// Gets or sets the partition key path.
         /// </summary>
-        public virtual string PartitionKeyPath { get; set; } = Environment.GetEnvironmentVariable(GymLogPartitionKeyPathKey);
+        public virtual string PartitionKeyPath { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.GymLogPartitionKeyPathKey) ?? string.Empty;
     }
 
     /// <summary>
@@ -151,12 +130,10 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class ApplicationInsightsSettings
     {
-        private const string AppInsightsKey = "APPLICATIONINSIGHTS_CONNECTION_STRING";
-
         /// <summary>
         /// Gets or sets the connection string.
         /// </summary>
-        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(AppInsightsKey);
+        public virtual string ConnectionString { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.AppInsightsKey) ?? string.Empty;
     }
 
     /// <summary>
@@ -164,20 +141,22 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class OpenApiSettings
     {
-        private const string OpenApiVersionKey = "OpenApi__Version";
-        private const string OpenApiDocVersionKey = "OpenApi__DocVersion";
-
         /// <summary>
         /// Gets or sets the <see cref="OpenApiVersionType"/> value.
         /// </summary>
         public virtual OpenApiVersionType Version { get; set; } = Enum.TryParse<OpenApiVersionType>(
-                                                                      Environment.GetEnvironmentVariable(OpenApiVersionKey), ignoreCase: true, out var result)
-                                                                    ? result
-                                                                    : OpenApiVersionType.V2;
+                                                                       Environment.GetEnvironmentVariable(AppSettingsKeys.OpenApiVersionKey), ignoreCase: true, out var result)
+                                                                     ? result
+                                                                     : OpenApiConfigurationOptions.DefaultVersion();
         /// <summary>
         /// Gets or sets the OpenAPI document version.
         /// </summary>
-        public virtual string DocumentVersion { get; set; } = Environment.GetEnvironmentVariable(OpenApiDocVersionKey);
+        public virtual string DocumentVersion { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.OpenApiDocVersionKey) ?? OpenApiConfigurationOptions.DefaultDocVersion();
+
+        /// <summary>
+        /// Gets or sets the OpenAPI document title.
+        /// </summary>
+        public virtual string DocumentTitle { get; set; } = Environment.GetEnvironmentVariable(AppSettingsKeys.OpenApiDocTitleKey) ?? OpenApiConfigurationOptions.DefaultDocTitle(typeof(AppSettings));
     }
 
     /// <summary>
@@ -201,33 +180,29 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class ForceErrorPublisherSettings
     {
-        private const string ForceErrorPublisherRoutineKey = "ForceError__Publisher__Routine";
-        private const string ForceErrorPublisherExerciseKey = "ForceError__Publisher__Exercise";
-        private const string ForceErrorPublisherPublishKey = "ForceError__Publisher__Publish";
-
         /// <summary>
         /// Gets or sets the value indicating whether to enforce an error on the routine action at publisher.
         /// </summary>
         public virtual bool Routine { get; set; } = bool.TryParse(
-                                                        Environment.GetEnvironmentVariable(ForceErrorPublisherRoutineKey), out var result)
-                                                      ? result
-                                                      : false;
+                                                         Environment.GetEnvironmentVariable(AppSettingsKeys.ForceErrorPublisherRoutineKey), out var result)
+                                                       ? result
+                                                       : false;
 
         /// <summary>
         /// Gets or sets the value indicating whether to enforce an error on the exercise action at publisher.
         /// </summary>
         public virtual bool Exercise { get; set; } = bool.TryParse(
-                                                         Environment.GetEnvironmentVariable(ForceErrorPublisherExerciseKey), out var result)
-                                                       ? result
-                                                       : false;
+                                                          Environment.GetEnvironmentVariable(AppSettingsKeys.ForceErrorPublisherExerciseKey), out var result)
+                                                        ? result
+                                                        : false;
 
         /// <summary>
         /// Gets or sets the value indicating whether to enforce an error on the record/publish action at publisher.
         /// </summary>
         public virtual bool Publish { get; set; } = bool.TryParse(
-                                                        Environment.GetEnvironmentVariable(ForceErrorPublisherPublishKey), out var result)
-                                                      ? result
-                                                      : false;
+                                                         Environment.GetEnvironmentVariable(AppSettingsKeys.ForceErrorPublisherPublishKey), out var result)
+                                                       ? result
+                                                       : false;
     }
 
     /// <summary>
@@ -235,14 +210,12 @@ namespace GymLog.FunctionApp.Configurations
     /// </summary>
     public class ForceErrorSubscriberSettings
     {
-        private const string ForceErrorSubscriberIngestKey = "ForceError__Subscriber__Ingest";
-
         /// <summary>
         /// Gets or sets the value indicating whether to enforce an error on the ingest action at subscriber.
         /// </summary>
         public virtual bool Ingest { get; set; } = bool.TryParse(
-                                                       Environment.GetEnvironmentVariable(ForceErrorSubscriberIngestKey), out var result)
-                                                     ? result
-                                                     : false;
+                                                        Environment.GetEnvironmentVariable(AppSettingsKeys.ForceErrorSubscriberIngestKey), out var result)
+                                                      ? result
+                                                      : false;
     }
 }
