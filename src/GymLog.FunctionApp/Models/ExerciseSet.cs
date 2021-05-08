@@ -23,12 +23,12 @@ namespace GymLog.FunctionApp.Models
         /// Gets or sets the weight.
         /// </summary>
         [JsonProperty("weight")]
-        public virtual decimal Weight { get; set; }
+        public virtual decimal? Weight { get; set; }
 
         /// <summary>
         /// Gets or sets the weight unit.
         /// </summary>
         [JsonProperty("unit")]
-        public virtual WeightUnitType Unit { get; set; }
+        public virtual WeightUnitType? Unit { get; set; }
     }
 }
