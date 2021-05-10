@@ -41,5 +41,10 @@ namespace GymLog.FunctionApp.Models
         /// Identifies targetting the shoulder.
         /// </summary>
         Shoulder = 5,
+
+        /// <summary>
+        /// Identifies targetting cardio.
+        /// </summary>
+        Cardio = 6,
     }
 }
